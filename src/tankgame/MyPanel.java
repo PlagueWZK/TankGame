@@ -103,7 +103,11 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             hero.setALoop(true);
         }
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            hero.shot();
+            if (hero.getShotCDTime().isReady) {
+                hero.shot();
+                new Thread(hero.getShotCDTime()).start();
+            }
+
         }
     }
 

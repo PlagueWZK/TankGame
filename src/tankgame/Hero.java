@@ -26,8 +26,8 @@ public class Hero extends Tank implements Runnable{
         this.ALoop = ALoop;
     }
 
-    Hero(int x, int y, int speed, int frequencyOfAmmo, int radiusOfAmmo) {
-        super(x, y,speed,frequencyOfAmmo,radiusOfAmmo);
+    Hero(int x, int y, int speed, int frequencyOfAmmo, int radiusOfAmmo,CoolDown shotCDTime) {
+        super(x, y,speed,frequencyOfAmmo,radiusOfAmmo,shotCDTime);
     }
 
     @Override
@@ -60,6 +60,6 @@ public class Hero extends Tank implements Runnable{
      }
 
      public static Hero getHero() {
-        return new Hero(500,600,10,1,5);
+        return new Hero(500,600,20,10,5,new CoolDown(500));
      }
 }
