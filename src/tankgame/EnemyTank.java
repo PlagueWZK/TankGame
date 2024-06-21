@@ -18,12 +18,11 @@ public class EnemyTank extends Tank implements Runnable {
     public Vector<Ammo> getEnemyAmmos() {
         return EnemyAmmos;
     }
-
     @Override
     @SuppressWarnings({"InfiniteLoopStatement","BusyWait"})
     public void run() {
         while (true) {
-            EnemyAmmos.add(new Ammo(getX(), getY() + EnemyTank.H_WHEEL_HEIGHT, getDirection(), 3, getFrequencyOfAmmo()));
+            EnemyAmmos.add(new Ammo(getX(), getY() + EnemyTank.H_WHEEL_HEIGHT + getRadiusOfAmmo() + 1, getDirection(), 3, getFrequencyOfAmmo()));
             new Thread(EnemyAmmos.getLast()).start();
             try {
                 Thread.sleep(getShotCDTime().getCDTime());

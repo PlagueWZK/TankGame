@@ -52,15 +52,15 @@ public class Hero extends Tank implements Runnable{
 
     public void shot() {
         switch (getDirection()) {
-            case 0-> ammos.add(new Ammo(getX(),getY()- Tank.H_WHEEL_HEIGHT,0,getRadiusOfAmmo(), getFrequencyOfAmmo()));
-            case 1-> ammos.add(new Ammo(getX()+ H_WHEEL_HEIGHT,getY(),1,getRadiusOfAmmo(), getFrequencyOfAmmo()));
-            case 2-> ammos.add(new Ammo(getX(),getY()+ Tank.H_WHEEL_HEIGHT,2,getRadiusOfAmmo(), getFrequencyOfAmmo()));
-            case 3-> ammos.add(new Ammo(getX()- H_WHEEL_HEIGHT,getY(),3,getRadiusOfAmmo(), getFrequencyOfAmmo()));
+            case 0-> ammos.add(new Ammo(getX(),getY()- Tank.H_WHEEL_HEIGHT - getRadiusOfAmmo() - 1,0,getRadiusOfAmmo(), getFrequencyOfAmmo()));
+            case 1-> ammos.add(new Ammo(getX()+ H_WHEEL_HEIGHT + getRadiusOfAmmo() + 1,getY(),1,getRadiusOfAmmo(), getFrequencyOfAmmo()));
+            case 2-> ammos.add(new Ammo(getX(),getY()+ Tank.H_WHEEL_HEIGHT + getRadiusOfAmmo() + 1,2,getRadiusOfAmmo(), getFrequencyOfAmmo()));
+            case 3-> ammos.add(new Ammo(getX()- H_WHEEL_HEIGHT - getRadiusOfAmmo() - 1,getY(),3,getRadiusOfAmmo(), getFrequencyOfAmmo()));
         }
         new Thread(ammos.getLast()).start();
      }
 
      public static Hero getHero(int direction) {
-        return new Hero(500,600,10,direction,10,5,new CoolDown(500));
+        return new Hero(500,600,10,direction,1,10,new CoolDown(500));
      }
 }

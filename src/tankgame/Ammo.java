@@ -1,6 +1,7 @@
 package tankgame;
 
 
+
 public class Ammo implements Runnable{
 
     int x;
@@ -41,6 +42,21 @@ public class Ammo implements Runnable{
                 case 1 -> x += 1;
                 case 2 -> y += 1;
                 case 3 -> x -= 1;
+            }
+            for (int i = MyPanel.getEnemyTanks().size() - 1; i >= 0 ;i--) {
+                if (isLive && MyPanel.hitTank(this,MyPanel.getEnemyTanks().get(i))) {
+                    isLive = false;
+                    MyPanel.getEnemyTanks().get(i).setLive(false);
+                    for (Ammo ammo :MyPanel.getEnemyTanks().get(i).getEnemyAmmos()) {
+                        ammo.isLive = false;
+                    }
+
+                    MyPanel.getEnemyTanks().remove(i);
+                }
+            }
+            if (isLive && MyPanel.hitTank(this,MyPanel.getHero())) {
+                isLive = false;
+                MyPanel.setGameOver(true);
             }
         }
     }

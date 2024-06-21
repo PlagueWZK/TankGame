@@ -1,15 +1,17 @@
 package tankgame;
 
 public class Tank {
-    private int x;
-    private int y;
-    private int direction;
-    private final int speed;
-    private final int frequencyOfAmmo;
-    private final int radiusOfAmmo;
-    private final CoolDown shotCDTime;
+    protected int x;
+    protected int y;
+    protected int direction;
+    protected final int speed;
+    protected final int frequencyOfAmmo;
+    protected final int radiusOfAmmo;
+    protected final CoolDown shotCDTime;
 
-    private final int span = 1;
+    protected boolean isLive = true;
+
+    protected final int span = 1;
     public static final int H_WHEEL_WIDTH = 5;
     public static final int H_WHEEL_HEIGHT = 30;
     public static final int H_BODY_WIDTH = 10;
@@ -24,6 +26,11 @@ public class Tank {
         this.radiusOfAmmo = radiusOfAmmo;
         this.shotCDTime = shotCDTime;
     }
+
+    public void setLive(boolean live) {
+        isLive = live;
+    }
+
     public void moveUp() {
         y-=span;
     }
