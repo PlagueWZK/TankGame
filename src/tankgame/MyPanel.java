@@ -10,6 +10,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     private static final Hero hero = Hero.getHero(0);
     private static final Vector<EnemyTank> enemyTanks = new Vector<>();
     private static boolean gameOver = false;
+
     public MyPanel() {
         new Thread(hero).start();
         int initialCount = 3;
@@ -30,6 +31,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     public static Vector<EnemyTank> getEnemyTanks() {
         return enemyTanks;
     }
+
     public void paint(Graphics g) {
         super.paint(g);
         g.fillRect(0, 0, 1000, 750);
@@ -64,9 +66,18 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         switch (tank.getDirection()) {
             case 0, 2 -> {
                 if (ammo.x + ammo.getRadius() > tank.getX() - Tank.H_WHEEL_WIDTH * 2 - Tank.H_BODY_WIDTH
-                        && ammo.x - ammo.getRadius()< tank.getX() + Tank.H_WHEEL_WIDTH * 2 + Tank.H_BODY_WIDTH
-                        && ammo.y + ammo.getRadius()> tank.getY() - Tank.H_WHEEL_HEIGHT
-                        && ammo.y - ammo.getRadius()< tank.getY() + Tank.H_WHEEL_HEIGHT) {
+                        && ammo.x - ammo.getRadius() < tank.getX() + Tank.H_WHEEL_WIDTH * 2 + Tank.H_BODY_WIDTH
+                        && ammo.y + ammo.getRadius() > tank.getY() - Tank.H_WHEEL_HEIGHT
+                        && ammo.y - ammo.getRadius() < tank.getY() + Tank.H_WHEEL_HEIGHT) {
+                    System.out.println("接触坦克");
+                    return true;
+                }
+            }
+            case 1, 3 -> {
+                if (ammo.x + ammo.getRadius() > tank.getX() - Tank.H_WHEEL_HEIGHT
+                        && ammo.x - ammo.getRadius() < tank.getX() + Tank.H_WHEEL_HEIGHT
+                        && ammo.y + ammo.getRadius() > tank.getY() - Tank.H_WHEEL_WIDTH * 2 - Tank.H_BODY_WIDTH
+                        && ammo.y - ammo.getRadius() < tank.getY() + Tank.H_WHEEL_WIDTH * 2 + Tank.H_BODY_WIDTH) {
                     System.out.println("接触坦克");
                     return true;
                 }
@@ -167,11 +178,13 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             hero.setSLoop(false);
         }
     }
+
     public static void gameOver(Graphics g) {
         g.setColor(Color.RED);
         g.setFont(new Font("Serif", Font.BOLD, 50));
         g.drawString("GAME OVER", Main.Bound_x / 2, Main.Bound_y / 2);
     }
+
     @Override
     @SuppressWarnings({"InfiniteLoopStatement", "BusyWait"})
     public void run() {
