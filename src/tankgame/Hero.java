@@ -26,11 +26,12 @@ public class Hero extends Tank implements Runnable{
         this.ALoop = ALoop;
     }
 
-    Hero(int x, int y, int speed, int frequencyOfAmmo, int radiusOfAmmo,CoolDown shotCDTime) {
-        super(x, y,speed,frequencyOfAmmo,radiusOfAmmo,shotCDTime);
+    Hero(int x, int y, int speed, int direction,int frequencyOfAmmo, int radiusOfAmmo,CoolDown shotCDTime) {
+        super(x, y,speed,direction,frequencyOfAmmo,radiusOfAmmo,shotCDTime);
     }
 
     @Override
+    @SuppressWarnings({"InfiniteLoopStatement","BusyWait"})
     public void run() {
        while (true) {
            if (WLoop) moveUp();
@@ -59,7 +60,7 @@ public class Hero extends Tank implements Runnable{
         new Thread(ammos.getLast()).start();
      }
 
-     public static Hero getHero() {
-        return new Hero(500,600,20,10,5,new CoolDown(500));
+     public static Hero getHero(int direction) {
+        return new Hero(500,600,10,direction,10,5,new CoolDown(500));
      }
 }

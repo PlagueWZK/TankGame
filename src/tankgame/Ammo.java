@@ -23,6 +23,7 @@ public class Ammo implements Runnable{
     }
 
     @Override
+    @SuppressWarnings({"BusyWait"})
     public void run() {
         while(isLive){
             if (!((x >= 0 && x <= Main.Bound_x) && (y >= 0 && y <= Main.Bound_y))) {
