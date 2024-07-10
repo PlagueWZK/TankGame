@@ -5,11 +5,11 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Vector;
-
+@SuppressWarnings("all")
 public class MyPanel extends JPanel implements KeyListener, Runnable {
     private static final Hero hero = Hero.getHero(0);
     private static final Vector<EnemyTank> enemyTanks = new Vector<>();
-    private static boolean gameOver = false;
+    private static final Vector<Boom> booms = new Vector<>();
 
     public MyPanel() {
         new Thread(hero).start();
@@ -19,13 +19,11 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             new Thread(enemyTanks.get(i)).start();
         }
     }
-
+    public static Vector<Boom> getBooms() {
+        return booms;
+    }
     public static Hero getHero() {
         return hero;
-    }
-
-    public static void setGameOver(boolean gameOver) {
-        MyPanel.gameOver = gameOver;
     }
 
     public static Vector<EnemyTank> getEnemyTanks() {
@@ -59,7 +57,12 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             }
         }
 
-        if (gameOver) gameOver(g);
+        if (!booms.isEmpty()) {
+            for (int i = 0; i < booms.size(); i++) {
+                drawBoom(booms.get(i), g);
+            }
+        }
+
     }
 
     public static boolean hitTank(Ammo ammo, Tank tank) {
@@ -85,7 +88,24 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         }
         return false;
     }
-
+    public void drawBoom(Boom boom, Graphics g) {
+        if (boom.getLife() < 50) {
+            g.setColor(Color.RED);
+            g.drawOval(boom.getX()-10,boom.getY()-10,20,20);
+        }
+        if (boom.getLife() < 30) {
+            g.setColor(Color.YELLOW);
+            g.drawOval(boom.getX()-20,boom.getY()-20,40,40);
+        }
+        if (boom.getLife() < 10) {
+            g.setColor(Color.white);
+            g.drawOval(boom.getX()-30,boom.getY()-30,60,60);
+        }
+        if (boom.getLife() <= 0) {
+            booms.remove(boom);
+        }
+        boom.lifeDown();
+    }
     public void drawAmmo(Ammo ammo, Graphics g) {
         g.fillOval(ammo.x - ammo.getRadius(), ammo.y - ammo.getRadius(), ammo.getRadius() * 2, ammo.getRadius() * 2);
     }
@@ -179,11 +199,6 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         }
     }
 
-    public static void gameOver(Graphics g) {
-        g.setColor(Color.RED);
-        g.setFont(new Font("Serif", Font.BOLD, 50));
-        g.drawString("GAME OVER", Main.Bound_x / 2, Main.Bound_y / 2);
-    }
 
     @Override
     @SuppressWarnings({"InfiniteLoopStatement", "BusyWait"})

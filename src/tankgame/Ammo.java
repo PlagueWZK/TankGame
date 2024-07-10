@@ -50,13 +50,12 @@ public class Ammo implements Runnable{
                     for (Ammo ammo :MyPanel.getEnemyTanks().get(i).getEnemyAmmos()) {
                         ammo.isLive = false;
                     }
-
+                    MyPanel.getBooms().add(new Boom(MyPanel.getEnemyTanks().get(i).getX(),MyPanel.getEnemyTanks().get(i).getY()));
                     MyPanel.getEnemyTanks().remove(i);
                 }
             }
             if (isLive && MyPanel.hitTank(this,MyPanel.getHero())) {
                 isLive = false;
-                MyPanel.setGameOver(true);
             }
         }
     }
