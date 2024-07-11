@@ -5,7 +5,7 @@ import java.util.Vector;
 public class EnemyTank extends Tank implements Runnable {
 
     Vector<Ammo> EnemyAmmos = new Vector<>();
-
+    boolean isLive = true;
 
     EnemyTank(int x, int y, int speed, int direction, int speedOfAmmo, int radiusOfAmmo, CoolDown coolDown) {
         super(x, y, speed, direction, speedOfAmmo, radiusOfAmmo, coolDown);
@@ -18,10 +18,20 @@ public class EnemyTank extends Tank implements Runnable {
     public Vector<Ammo> getEnemyAmmos() {
         return EnemyAmmos;
     }
+
+    public boolean isLive() {
+        return isLive;
+    }
+
     @Override
-    @SuppressWarnings({"InfiniteLoopStatement","BusyWait"})
+    public void setLive(boolean live) {
+        isLive = live;
+    }
+
+    @Override
+    @SuppressWarnings({"BusyWait"})
     public void run() {
-        while (true) {
+        while (isLive) {
             EnemyAmmos.add(new Ammo(getX(), getY() + EnemyTank.H_WHEEL_HEIGHT + getRadiusOfAmmo() + 1, getDirection(), 3, getFrequencyOfAmmo()));
             new Thread(EnemyAmmos.getLast()).start();
             try {

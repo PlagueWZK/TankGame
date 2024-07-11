@@ -1,5 +1,6 @@
 ### IntelliJ IDEA ###
 out/
+!out/production/TankGame/Images
 !**/src/main/**/out/
 !**/src/test/**/out/
 .idea

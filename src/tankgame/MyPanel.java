@@ -5,12 +5,14 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Vector;
-@SuppressWarnings("all")
 public class MyPanel extends JPanel implements KeyListener, Runnable {
     private static final Hero hero = Hero.getHero(0);
     private static final Vector<EnemyTank> enemyTanks = new Vector<>();
     private static final Vector<Boom> booms = new Vector<>();
 
+    Image bomb1;
+    Image bomb2;
+    Image bomb3;
     public MyPanel() {
         new Thread(hero).start();
         int initialCount = 3;
@@ -18,6 +20,9 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             enemyTanks.add(EnemyTank.getEnemyTank((i + 1) * 100, 100, 2));
             new Thread(enemyTanks.get(i)).start();
         }
+        bomb1 = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Images/bomb1.gif"));
+        bomb2 = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Images/bomb2.gif"));
+        bomb3 = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Images/bomb3.gif"));
     }
     public static Vector<Boom> getBooms() {
         return booms;
@@ -59,10 +64,12 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
 
         if (!booms.isEmpty()) {
             for (int i = 0; i < booms.size(); i++) {
-                drawBoom(booms.get(i), g);
+                if (booms.get(i).isLive) {
+                    drawBoom(booms.get(i), g);
+                }
             }
         }
-
+        g.drawImage(bomb1,500,500,this);
     }
 
     public static boolean hitTank(Ammo ammo, Tank tank) {
@@ -89,19 +96,13 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         return false;
     }
     public void drawBoom(Boom boom, Graphics g) {
-        if (boom.getLife() < 50) {
-            g.setColor(Color.RED);
-            g.drawOval(boom.getX()-10,boom.getY()-10,20,20);
-        }
-        if (boom.getLife() < 30) {
-            g.setColor(Color.YELLOW);
-            g.drawOval(boom.getX()-20,boom.getY()-20,40,40);
-        }
-        if (boom.getLife() < 10) {
-            g.setColor(Color.white);
-            g.drawOval(boom.getX()-30,boom.getY()-30,60,60);
-        }
-        if (boom.getLife() <= 0) {
+        if (boom.getLife() < 50 && boom.getLife() > 30) {
+            g.drawImage(bomb1, boom.getX()-30, boom.getY()-30,60,60,this);
+        }else if (boom.getLife() <= 30 && boom.getLife() > 10) {
+            g.drawImage(bomb2, boom.getX()-30, boom.getY()-30,60,60,this);
+        }else if (boom.getLife() <= 10 && boom.getLife() > 0) {
+            g.drawImage(bomb3, boom.getX()-30, boom.getY()-30,60,60,this);
+        }else if (boom.getLife() <= 0) {
             booms.remove(boom);
         }
         boom.lifeDown();
